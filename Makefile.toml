@@ -4,7 +4,7 @@ CARGO_MANIFEST_DIR = "${CARGO_MAKE_WORKING_DIRECTORY}"
 CARGO_PROFILE = "dev"
 CARGO_TARGET_DIR = {value = "target", condition = {env_not_set = ["CARGO_TARGET_DIR"]}}
 CARGO_WASM_PATH = "${CARGO_TARGET_DIR}/wasm32-unknown-unknown/${CARGO_ENV_DIR}/${CARGO_MAKE_CRATE_NAME}.wasm"
-TARGET_DIR = "target"
+WEB_TARGET_DIR = "web"
 
 [env.release]
 CARGO_RELEASE_ARGS = "--release"
@@ -28,9 +28,13 @@ command = "cargo"
 dependencies = ["install-target-wasm32-unknown-unknown"]
 
 [tasks.build-web]
-args = ["--out-dir", "${TARGET_DIR}", "--out-name", "wasm", "--target", "web", "--no-typescript", "${CARGO_WASM_PATH}"]
+args = ["--out-dir", "${WEB_TARGET_DIR}", "--out-name", "wasm", "--target", "web", "--no-typescript", "${CARGO_WASM_PATH}"]
 command = "wasm-bindgen"
 dependencies = ["cargo-build-web", "wasm-bindgen-cli"]
+
+[tasks.copy-assets]
+args = ["-R", "assets", "${WEB_TARGET_DIR}"]
+command = "cp"
 
 [tasks.build-native]
 args = ["build", "--features", "native", "@@split(CARGO_RELEASE_ARGS, )"]
@@ -41,9 +45,9 @@ command = "${CARGO_TARGET_DIR}/${CARGO_ENV_DIR}/${CARGO_MAKE_BINARY_EXECUTABLE_N
 dependencies = ["build-native"]
 
 [tasks.serve]
-args = ["-x"]
+args = ["-x", "./web"]
 command = "basic-http-server"
-dependencies = ["build-web", "basic-http-server"]
+dependencies = ["build-web", "basic-http-server", "copy-assets"]
 
 [tasks.test]
 disabled = true
