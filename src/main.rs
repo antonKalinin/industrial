@@ -1,7 +1,9 @@
 mod constants;
+mod utils;
 
 use bevy::prelude::*;
 use constants::{BG_COLOR, WINDOW_HEIGHT, WINDOW_WIDTH};
+use utils::from_grid_by_offset;
 
 fn main() {
     let window = WindowDescriptor {
@@ -44,8 +46,14 @@ fn setup(
     asset_server: Res<AssetServer>,
     mut texture_atlases: ResMut<Assets<TextureAtlas>>,
 ) {
-    let texture_handle = asset_server.load("run.png");
-    let texture_atlas = TextureAtlas::from_grid(texture_handle, Vec2::new(21.0, 33.0), 8, 1);
+    let texture_handle = asset_server.load("industrial.png");
+    let texture_atlas = from_grid_by_offset(
+        texture_handle,
+        Vec2::new(16.0, 16.0),
+        Vec2::new(0.0, 272.0),
+        8,
+        1,
+    );
     let texture_atlas_handle = texture_atlases.add(texture_atlas);
     commands.spawn_bundle(OrthographicCameraBundle::new_2d());
     commands
