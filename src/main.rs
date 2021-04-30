@@ -1,9 +1,11 @@
+mod components;
 mod constants;
+mod systems;
 mod utils;
 
 use bevy::prelude::*;
 use constants::{BG_COLOR, WINDOW_HEIGHT, WINDOW_WIDTH};
-use utils::from_grid_by_offset;
+use systems::{animation, movement, setup};
 
 fn main() {
     let window = WindowDescriptor {
@@ -23,44 +25,7 @@ fn main() {
     app.add_plugin(bevy_webgl2::WebGL2Plugin);
 
     app.add_startup_system(setup.system())
-        .add_system(animate_sprite_system.system())
+        .add_system(movement.system())
+        .add_system(animation.system())
         .run();
-}
-
-fn animate_sprite_system(
-    time: Res<Time>,
-    texture_atlases: Res<Assets<TextureAtlas>>,
-    mut query: Query<(&mut Timer, &mut TextureAtlasSprite, &Handle<TextureAtlas>)>,
-) {
-    for (mut timer, mut sprite, texture_atlas_handle) in query.iter_mut() {
-        timer.tick(time.delta());
-        if timer.finished() {
-            let texture_atlas = texture_atlases.get(texture_atlas_handle).unwrap();
-            sprite.index = ((sprite.index as usize + 1) % texture_atlas.textures.len()) as u32;
-        }
-    }
-}
-
-fn setup(
-    mut commands: Commands,
-    asset_server: Res<AssetServer>,
-    mut texture_atlases: ResMut<Assets<TextureAtlas>>,
-) {
-    let texture_handle = asset_server.load("industrial.png");
-    let texture_atlas = from_grid_by_offset(
-        texture_handle,
-        Vec2::new(16.0, 16.0),
-        Vec2::new(0.0, 272.0),
-        8,
-        1,
-    );
-    let texture_atlas_handle = texture_atlases.add(texture_atlas);
-    commands.spawn_bundle(OrthographicCameraBundle::new_2d());
-    commands
-        .spawn_bundle(SpriteSheetBundle {
-            texture_atlas: texture_atlas_handle,
-            transform: Transform::from_scale(Vec3::splat(2.0)),
-            ..Default::default()
-        })
-        .insert(Timer::from_seconds(0.1, true));
 }
