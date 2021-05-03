@@ -7,7 +7,7 @@ mod utils;
 use bevy::prelude::*;
 use constants::{BG_COLOR, WINDOW_HEIGHT, WINDOW_WIDTH};
 use resources::Sprites;
-use systems::{animation, movement, setup};
+use systems::player;
 
 fn main() {
     let window = WindowDescriptor {
@@ -28,8 +28,8 @@ fn main() {
     #[cfg(target_arch = "wasm32")]
     app.add_plugin(bevy_webgl2::WebGL2Plugin);
 
-    app.add_startup_system(setup.system())
-        .add_system(movement.system())
-        .add_system(animation.system())
+    app.add_startup_system(player::setup.system())
+        .add_system(player::movement.system())
+        .add_system(player::animation.system())
         .run();
 }

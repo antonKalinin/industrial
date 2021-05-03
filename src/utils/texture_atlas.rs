@@ -31,3 +31,25 @@ pub fn from_grid_with_offset(
     texture_handles: None,
   }
 }
+
+pub fn from_tiles(
+  texture: Handle<Texture>,
+  tile_size: Vec2,
+  tiles_x0y0: Vec<Vec2>,
+) -> TextureAtlas {
+  let mut sprites = Vec::new();
+
+  for x0y0 in tiles_x0y0 {
+    sprites.push(Rect {
+      min: x0y0,
+      max: Vec2::new(x0y0.x + tile_size.x, x0y0.y + tile_size.y),
+    })
+  }
+
+  TextureAtlas {
+    size: Vec2::new(512.0, 512.0),
+    textures: sprites,
+    texture,
+    texture_handles: None,
+  }
+}
