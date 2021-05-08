@@ -2,7 +2,6 @@ mod components;
 mod constants;
 mod resources;
 mod systems;
-mod utils;
 
 use bevy::prelude::*;
 use constants::{BG_COLOR, WINDOW_HEIGHT, WINDOW_WIDTH};

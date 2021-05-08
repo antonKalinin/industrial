@@ -3,10 +3,9 @@ use bevy::prelude::*;
 #[derive(PartialEq)]
 pub enum PlayerState {
   Idle,
-  Running,
-  Jumping,
   InAir,
   Landing,
+  Running,
 }
 
 pub struct Player {

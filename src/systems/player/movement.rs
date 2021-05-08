@@ -25,12 +25,15 @@ pub fn movement(
 
     if keyboard_input.pressed(KeyCode::Up) && !player_is_in_air {
       player.velocity.y = PLAYER_INITIAL_VERTICAL_SPEED;
-      player.state = PlayerState::Jumping;
+      player.state = PlayerState::InAir;
     }
 
     if keyboard_input.just_released(KeyCode::Right) || keyboard_input.just_released(KeyCode::Left) {
       player.velocity.x = 0.0;
-      player.state = PlayerState::Idle;
+
+      if player.state != PlayerState::InAir {
+        player.state = PlayerState::Idle;
+      }
     }
 
     // player is constantly affected by gravity
