@@ -28,7 +28,7 @@ fn main() {
     app.add_plugin(bevy_webgl2::WebGL2Plugin);
 
     app.add_startup_system(player::setup.system())
-        .add_system(player::movement.system())
+        .add_system(player::action.system())
         .add_system(player::animation.system())
         .run();
 }

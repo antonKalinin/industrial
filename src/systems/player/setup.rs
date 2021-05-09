@@ -49,11 +49,27 @@ pub fn setup(
     Vec2::new(112.0, 272.0),
   ];
 
+  let fight_tiles = vec![
+    Vec2::new(0.0, 304.0),
+    Vec2::new(16.0, 304.0),
+    Vec2::new(32.0, 304.0),
+    Vec2::new(48.0, 304.0),
+  ];
+
+  let shoot_tiles = vec![
+    Vec2::new(0.0, 288.0),
+    Vec2::new(16.0, 288.0),
+    Vec2::new(32.0, 288.0),
+    Vec2::new(48.0, 288.0),
+  ];
+
   let tiles_with_keys = vec![
     ("player_air", air_tiles),
     ("player_run", run_tiles),
     ("player_idle", idle_tiles),
     ("player_land", land_tiles),
+    ("player_fight", fight_tiles),
+    ("player_shoot", shoot_tiles),
   ];
 
   for (key, mut animation_tiles) in tiles_with_keys {

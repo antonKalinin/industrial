@@ -6,6 +6,8 @@ pub enum PlayerState {
   InAir,
   Landing,
   Running,
+  Fighting,
+  Shooting,
 }
 
 pub struct Player {

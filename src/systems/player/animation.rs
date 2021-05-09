@@ -18,13 +18,11 @@ pub fn animation(
         PlayerState::InAir => start_end = *sprites.get("player_air").unwrap(),
         PlayerState::Landing => start_end = *sprites.get("player_land").unwrap(),
         PlayerState::Running => start_end = *sprites.get("player_run").unwrap(),
+        PlayerState::Fighting => start_end = *sprites.get("player_fight").unwrap(),
+        PlayerState::Shooting => start_end = *sprites.get("player_shoot").unwrap(),
       }
 
-      if sprite.index < start_end[0] as u32 || sprite.index > start_end[1] as u32 {
-        sprite.index = start_end[0] as u32;
-      }
-
-      if sprite.index >= start_end[1] as u32 {
+      if sprite.index < start_end[0] as u32 || sprite.index >= start_end[1] as u32 {
         sprite.index = start_end[0] as u32;
       } else {
         sprite.index += 1;
@@ -35,6 +33,8 @@ pub fn animation(
           // it is a right moment to switch player to another state
           match player.state {
             PlayerState::Landing => player.state = PlayerState::Idle,
+            PlayerState::Fighting => player.state = PlayerState::Idle,
+            PlayerState::Shooting => player.state = PlayerState::Idle,
             _ => {}
           }
         }

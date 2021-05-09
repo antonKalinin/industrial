@@ -3,7 +3,7 @@ use bevy::prelude::*;
 use crate::components::{Player, PlayerState};
 use crate::constants::{GRAVITY, PLAYER_HORIZONTAL_SPEED, PLAYER_INITIAL_VERTICAL_SPEED};
 
-pub fn movement(
+pub fn action(
   time: Res<Time>,
   keyboard_input: Res<Input<KeyCode>>,
   mut player_query: Query<(&mut Player, &mut Transform)>,
@@ -34,6 +34,14 @@ pub fn movement(
       if player.state != PlayerState::InAir {
         player.state = PlayerState::Idle;
       }
+    }
+
+    if keyboard_input.pressed(KeyCode::X) && !player_jumping {
+      player.state = PlayerState::Fighting;
+    }
+
+    if keyboard_input.pressed(KeyCode::Z) && !player_jumping {
+      player.state = PlayerState::Shooting;
     }
 
     // player is constantly affected by gravity

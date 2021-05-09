@@ -1,7 +1,7 @@
+mod action;
 mod animation;
-mod movement;
 mod setup;
 
+pub use action::action;
 pub use animation::animation;
-pub use movement::movement;
 pub use setup::setup;
