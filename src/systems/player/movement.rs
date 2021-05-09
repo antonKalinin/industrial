@@ -9,21 +9,21 @@ pub fn movement(
   mut player_query: Query<(&mut Player, &mut Transform)>,
 ) {
   for (mut player, mut player_transform) in player_query.iter_mut() {
-    let player_is_in_air = player.velocity.y != 0.0;
+    let player_jumping = player.state == PlayerState::InAir || player.state == PlayerState::Landing;
 
-    if keyboard_input.pressed(KeyCode::Right) && !player_is_in_air {
+    if keyboard_input.pressed(KeyCode::Right) && !player_jumping {
       player.velocity.x = PLAYER_HORIZONTAL_SPEED;
       player_transform.rotation = Quat::from_rotation_y(0.0);
       player.state = PlayerState::Running;
     }
 
-    if keyboard_input.pressed(KeyCode::Left) && !player_is_in_air {
+    if keyboard_input.pressed(KeyCode::Left) && !player_jumping {
       player.velocity.x = -PLAYER_HORIZONTAL_SPEED;
       player_transform.rotation = Quat::from_rotation_y(std::f32::consts::PI);
       player.state = PlayerState::Running;
     }
 
-    if keyboard_input.pressed(KeyCode::Up) && !player_is_in_air {
+    if keyboard_input.pressed(KeyCode::Up) && !player_jumping {
       player.velocity.y = PLAYER_INITIAL_VERTICAL_SPEED;
       player.state = PlayerState::InAir;
     }
